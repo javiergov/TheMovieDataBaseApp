@@ -53,10 +53,22 @@ struct MovieList : Decodable {
     }
 }
 
+enum TMDBListCategorization {
+    case PopularityList
+    case TopRatedList
+}
+
+struct APIStrings {
+    let apiKey = "34738023d27013e6d1b995443764da44"
+    let popularURL = "https://api.themoviedb.org/3/movie/popular?api_key=34738023d27013e6d1b995443764da44"
+    let topRatedURL = "https://api.themoviedb.org/3/movie/top_rated?api_key=34738023d27013e6d1b995443764da44"
+    let baseMovieImageURL = "http://image.tmdb.org/t/p/w500"
+}
+
 class MoviesManager: NSObject {
     
-    let dataURLString = "https://api.themoviedb.org/3/movie/popular?api_key=34738023d27013e6d1b995443764da44"
-    
+    var dataURLString : String = ""
+    let apiStrings = APIStrings()
     var totalElements : [MovieResultElement] = Array.init() {
         didSet {
             print(" new elements: \(totalElements.count) \(totalElements)")
@@ -77,7 +89,7 @@ class MoviesManager: NSObject {
     }
     
     func amountOfElementsInList() -> Int {
-        print("•• totalElements.count \(totalElements.count)")
+        print(" totalElements.count \(totalElements.count)")
         return totalElements.count
     }
     
@@ -87,6 +99,17 @@ class MoviesManager: NSObject {
     }
     
     // MARK: - JSON Data.
+    
+    func getJSONData(forListType type : TMDBListCategorization, callingClosure closure : @escaping () -> Void) {
+    
+        switch type {
+        case .PopularityList:
+            dataURLString = apiStrings.popularURL
+        case .TopRatedList:
+            dataURLString = apiStrings.topRatedURL
+        }
+        getRemoteJSONData(thenCall: closure)
+    }
     
     func getRemoteJSONData(thenCall closure : @escaping () -> Void) {
         if let url = URL(string: dataURLString) {
