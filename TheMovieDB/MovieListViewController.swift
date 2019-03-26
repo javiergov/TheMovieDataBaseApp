@@ -8,7 +8,22 @@
 
 import UIKit
 
+protocol MovieCellButtonDelegate {
+    func informationButtonDidGetSelected(at row : Int)
+}
+
+class MovieDetailView : UIView {
+    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var poster: UIImageView!
+    @IBOutlet weak var posterActivityIndicator: UIActivityIndicatorView!
+}
+
+
 class MovieListCell: UITableViewCell {
+    
+    var delegate : MovieCellButtonDelegate? = nil
+    @IBOutlet weak var informationButton: UIButton!
     @IBOutlet weak var movieTitleLabel: UILabel!
     @IBOutlet weak var moviePopularity: UILabel!
     @IBOutlet weak var movieScore: UILabel!
@@ -18,11 +33,17 @@ class MovieListCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    @IBAction func informationButtonAction(_ sender: UIButton) {
+        self.delegate?.informationButtonDidGetSelected(at: sender.tag)
+    }
 }
 
-class MovieListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MovieListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MovieCellButtonDelegate {
+
     var dataManager = MoviesManager()
     @IBOutlet weak var listTableView: UITableView!
+    @IBOutlet weak var detailView: MovieDetailView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +52,7 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
         listTableView.delegate = self
         listTableView.dataSource = self
         self.view.backgroundColor = UIColor.groupTableViewBackground
+        detailView.posterActivityIndicator.hidesWhenStopped = true
         getUpdatedData()
     }
     
@@ -81,6 +103,31 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.movieTitleLabel.text = movieElement.title
         cell.moviePopularity.text = String(format: "%.2f", movieElement.popularity)
         cell.movieScore.text = String(format: "%.1f", movieElement.voteAverage)
+        cell.informationButton.tag = indexPath.row
+        cell.delegate = self
         return cell
+    }
+    
+    func informationButtonDidGetSelected(at row: Int) {
+        let selectedMovieElement = dataManager.getElementForList(atIndex: row)
+        if let imageURL = selectedMovieElement.getPosterImageURL() {
+            print(" imageURL: \(imageURL.absoluteString)")
+            detailView.posterActivityIndicator.startAnimating()
+            dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in
+                print(" closure: row \(row) relatedIndex: \(relatedIndex)")
+                if relatedIndex == row {
+                    DispatchQueue.main.async {
+                        self.detailView.posterActivityIndicator.stopAnimating()
+                        self.detailView.poster.image = downloadedImage
+                    }
+                }
+            }
+        }
+        else {
+            detailView.posterActivityIndicator.stopAnimating()
+        }
+        detailView.titleLabel.text = selectedMovieElement.title
+        detailView.descriptionTextView.text = selectedMovieElement.overview
+        detailView.descriptionTextView.setContentOffset(CGPoint.zero, animated: true)        
     }
 }

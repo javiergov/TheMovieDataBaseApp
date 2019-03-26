@@ -9,6 +9,8 @@
 import UIKit
 
 struct MovieResultElement : Decodable {
+    static private let basePosterURLString = "https://image.tmdb.org/t/p/w500"
+    
     var voteCount : Int
     var identification : Int
     var video : Bool
@@ -36,6 +38,11 @@ struct MovieResultElement : Decodable {
         case backdropPath = "backdrop_path"
         case releaseDate = "release_date"
     }
+    
+    func getPosterImageURL() -> URL? {
+        let posterURLString = MovieResultElement.basePosterURLString + posterPath
+        return URL(string: posterURLString)
+    }
 }
 
 struct MovieList : Decodable {
@@ -62,7 +69,6 @@ struct APIStrings {
     let apiKey = "34738023d27013e6d1b995443764da44"
     let popularURL = "https://api.themoviedb.org/3/movie/popular?api_key=34738023d27013e6d1b995443764da44"
     let topRatedURL = "https://api.themoviedb.org/3/movie/top_rated?api_key=34738023d27013e6d1b995443764da44"
-    let baseMovieImageURL = "http://image.tmdb.org/t/p/w500"
 }
 
 class MoviesManager: NSObject {
@@ -96,6 +102,24 @@ class MoviesManager: NSObject {
     func getElementForList(atIndex index : Int) -> MovieResultElement {
         
         return totalElements[index]
+    }
+    
+    // MARK: - Image Utility
+    
+    func downloadImage(at url : URL, from elementIndex : Int, withCompletion closure : @escaping (UIImage?, Int) -> Void) {
+        
+        let request = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request) { (data:Data?, response:URLResponse?, error:Error?) in
+            if error != nil {
+                print(" Error downloading image.")
+                closure(nil, elementIndex)
+            } else {
+                if let imgData = data {
+                    closure(UIImage(data: imgData), elementIndex)
+                }
+            }
+        }
+        task.resume()
     }
     
     // MARK: - JSON Data.
