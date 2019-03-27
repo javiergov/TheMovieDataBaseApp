@@ -233,13 +233,16 @@
 				TargetAttributes = {
 					B34CE406223A067B005104E5 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					B34CE41A223A067D005104E5 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = B34CE406223A067B005104E5;
 					};
 					B34CE425223A067D005104E5 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = B34CE406223A067B005104E5;
 					};
 				};
@@ -485,6 +488,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RFPC285CSM;
 				INFOPLIST_FILE = "$(SRCROOT)/TheMovieDB/Support Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -492,7 +496,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.cencosud.test.TheMovieDB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -506,6 +510,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = RFPC285CSM;
 				INFOPLIST_FILE = "$(SRCROOT)/TheMovieDB/Support Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -513,7 +518,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dev.cencosud.test.TheMovieDB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -533,7 +538,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.cencosud.test.TheMovieDBTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TheMovieDB.app/TheMovieDB";
 			};
@@ -554,7 +559,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.cencosud.test.TheMovieDBTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TheMovieDB.app/TheMovieDB";
 			};
@@ -574,7 +579,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.cencosud.test.TheMovieDBUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TheMovieDB;
 			};
@@ -594,7 +599,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dev.cencosud.test.TheMovieDBUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TheMovieDB;
 			};
