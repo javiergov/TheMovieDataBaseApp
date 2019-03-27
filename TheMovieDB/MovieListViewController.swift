@@ -17,6 +17,13 @@ class MovieDetailView : UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var poster: UIImageView!
     @IBOutlet weak var posterActivityIndicator: UIActivityIndicatorView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        descriptionTextView.text = nil
+        titleLabel.text = nil
+        poster.image = nil
+    }
 }
 
 
@@ -44,16 +51,22 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
     var dataManager = MoviesManager()
     @IBOutlet weak var listTableView: UITableView!
     @IBOutlet weak var detailView: MovieDetailView!
+    @IBOutlet weak var listTypeSegmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "The Movies DB"
         
         listTableView.delegate = self
-        listTableView.dataSource = self
+        listTableView.dataSource = self        
         self.view.backgroundColor = UIColor.groupTableViewBackground
         detailView.posterActivityIndicator.hidesWhenStopped = true
-        getUpdatedData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // after the view controller appears load the list with the initial value of the segmented control.
+        segementSelected(listTypeSegmentedControl)
     }
     
     @IBAction func segementSelected(_ sender: UISegmentedControl) {
@@ -61,7 +74,6 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
         print("selected: \(sender.selectedSegmentIndex)")
         
         let dataUpdateClosure = { DispatchQueue.main.async {
-            self.listTableView.backgroundColor = UIColor.blue
             self.listTableView.reloadData()
             }
         }
@@ -73,16 +85,6 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
             dataManager.getJSONData(forListType: .TopRatedList, callingClosure: dataUpdateClosure)
         default:
             print(" Unassociated segment")
-        }
-    }
-
-    func getUpdatedData() {
-        dataManager.getRemoteJSONData {
-            print(" json finalized")
-            DispatchQueue.main.async {
-                self.listTableView.backgroundColor = UIColor.yellow
-                self.listTableView.reloadData()
-            }
         }
     }
     

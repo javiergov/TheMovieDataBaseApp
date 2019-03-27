@@ -135,7 +135,7 @@ class MoviesManager: NSObject {
         getRemoteJSONData(thenCall: closure)
     }
     
-    func getRemoteJSONData(thenCall closure : @escaping () -> Void) {
+    private func getRemoteJSONData(thenCall closure : @escaping () -> Void) {
         if let url = URL(string: dataURLString) {
             let request = URLRequest(url: url)
             let task = URLSession.shared.dataTask(with: request) { (data:Data?, response:URLResponse?, error:Error?) in
