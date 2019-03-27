@@ -14,7 +14,7 @@ class MoviesManager: NSObject {
     let apiStrings = APIStrings()
     var totalElements : [MovieResultElement] = Array() {
         didSet {
-            print(" new elements: \(totalElements.count) \(totalElements)")
+            print(" new elements: \(totalElements.count)")
         }}
     
     // MARK: - Table View data source.

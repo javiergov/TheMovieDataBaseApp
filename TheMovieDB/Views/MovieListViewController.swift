@@ -58,7 +58,7 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier:MovieListCell.reuseIdentifier) as? MovieListCell else {
-            fatalError("The dequeued cell is not an instance of GLListCell.")
+            fatalError("The dequeued cell is not an instance of MovieListCell.")
         }
         
         let movieElement = dataManager.getElementForList(atIndex: indexPath.row)
@@ -77,8 +77,7 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
         if let imageURL = selectedMovieElement.getPosterImageURL() {
             print(" imageURL: \(imageURL.absoluteString)")
             detailView.posterActivityIndicator.startAnimating()
-            dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in
-                print(" closure: row \(row) relatedIndex: \(relatedIndex)")
+            dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in                
                 if relatedIndex == row {
                     DispatchQueue.main.async {
                         self.detailView.posterActivityIndicator.stopAnimating()
