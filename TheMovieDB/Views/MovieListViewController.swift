@@ -8,44 +8,6 @@
 
 import UIKit
 
-protocol MovieCellButtonDelegate {
-    func informationButtonDidGetSelected(at row : Int)
-}
-
-class MovieDetailView : UIView {
-    @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var poster: UIImageView!
-    @IBOutlet weak var posterActivityIndicator: UIActivityIndicatorView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        descriptionTextView.text = nil
-        titleLabel.text = nil
-        poster.image = nil
-    }
-}
-
-
-class MovieListCell: UITableViewCell {
-    
-    var delegate : MovieCellButtonDelegate? = nil
-    @IBOutlet weak var informationButton: UIButton!
-    @IBOutlet weak var movieTitleLabel: UILabel!
-    @IBOutlet weak var moviePopularity: UILabel!
-    @IBOutlet weak var movieScore: UILabel!
-    static let reuseIdentifier = "movieListCell"
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    @IBAction func informationButtonAction(_ sender: UIButton) {
-        self.delegate?.informationButtonDidGetSelected(at: sender.tag)
-    }
-}
-
 class MovieListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MovieCellButtonDelegate {
 
     var dataManager = MoviesManager()
