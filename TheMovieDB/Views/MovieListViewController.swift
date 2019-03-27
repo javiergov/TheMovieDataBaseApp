@@ -17,7 +17,7 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "The Movies DB"
+        self.title = "The Movie Db"
         
         listTableView.delegate = self
         listTableView.dataSource = self        
@@ -77,7 +77,7 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
         if let imageURL = selectedMovieElement.getPosterImageURL() {
             print(" imageURL: \(imageURL.absoluteString)")
             detailView.posterActivityIndicator.startAnimating()
-            dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in                
+            dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in
                 if relatedIndex == row {
                     DispatchQueue.main.async {
                         self.detailView.posterActivityIndicator.stopAnimating()
