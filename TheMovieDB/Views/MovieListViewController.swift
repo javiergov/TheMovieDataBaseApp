@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MovieCellButtonDelegate {
+class MovieListViewController: UIViewController {
 
     var dataManager = MoviesManager()
     @IBOutlet weak var listTableView: UITableView!
@@ -49,14 +49,19 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
             print(" Unassociated segment")
         }
     }
+
+}
+
+extension MovieListViewController: UITableViewDelegate {
     
-    // MARK: - Table View Delegate
+}
+
+extension MovieListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataManager.totalElements.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier:MovieListCell.reuseIdentifier) as? MovieListCell else {
             fatalError("The dequeued cell is not an instance of MovieListCell.")
         }
@@ -71,26 +76,28 @@ class MovieListViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.delegate = self
         return cell
     }
-    
+}
+
+extension MovieListViewController: MovieCellButtonDelegate {
     func informationButtonDidGetSelected(at row: Int) {
-        let selectedMovieElement = dataManager.getElementForList(atIndex: row)
-        if let imageURL = selectedMovieElement.getPosterImageURL() {
-            print(" imageURL: \(imageURL.absoluteString)")
-            detailView.posterActivityIndicator.startAnimating()
-            dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in
-                if relatedIndex == row {
-                    DispatchQueue.main.async {
-                        self.detailView.posterActivityIndicator.stopAnimating()
-                        self.detailView.poster.image = downloadedImage
-                    }
-                }
-            }
-        }
-        else {
-            detailView.posterActivityIndicator.stopAnimating()
-        }
-        detailView.titleLabel.text = selectedMovieElement.title
-        detailView.descriptionTextView.text = selectedMovieElement.overview
-        detailView.descriptionTextView.setContentOffset(CGPoint.zero, animated: true)        
-    }
+           let selectedMovieElement = dataManager.getElementForList(atIndex: row)
+           if let imageURL = selectedMovieElement.getPosterImageURL() {
+               print(" imageURL: \(imageURL.absoluteString)")
+               detailView.posterActivityIndicator.startAnimating()
+               dataManager.downloadImage(at: imageURL, from: row) { (downloadedImage : UIImage?, relatedIndex : Int) in
+                   if relatedIndex == row {
+                       DispatchQueue.main.async {
+                           self.detailView.posterActivityIndicator.stopAnimating()
+                           self.detailView.poster.image = downloadedImage
+                       }
+                   }
+               }
+           }
+           else {
+               detailView.posterActivityIndicator.stopAnimating()
+           }
+           detailView.titleLabel.text = selectedMovieElement.title
+           detailView.descriptionTextView.text = selectedMovieElement.overview
+           detailView.descriptionTextView.setContentOffset(CGPoint.zero, animated: true)
+       }
 }
